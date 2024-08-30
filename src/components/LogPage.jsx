@@ -1,19 +1,38 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { validData } from "../utils/Valid";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  updateProfile,
+} from "firebase/auth";
+import { auth } from "../utils/firebase";
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { addUser } from "../utils/userSlice";
+import { selectUser } from "../utils/userSlice";
 
 const LogPage = () => {
+  const navigate = useNavigate();
   const [isLogin, setIsLogin] = useState(true);
   const name = useRef(null);
   const email = useRef(null);
   const password = useRef(null);
   const [errorMessage, setErrorMessage] = useState("");
+  const dispatch = useDispatch();
+  const user = useSelector(selectUser);
+
+  useEffect(() => {
+    if (user) {
+      navigate("/browse");
+    }
+  }, [user, navigate]);
 
   const toggleForm = () => {
     setIsLogin(!isLogin);
     setErrorMessage("");
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const message = validData(
       isLogin,
@@ -22,6 +41,57 @@ const LogPage = () => {
       password.current.value
     );
     setErrorMessage(message);
+    if (message) return;
+
+    try {
+      if (!isLogin) {
+        const userCredential = await createUserWithEmailAndPassword(
+          auth,
+          email.current.value,
+          password.current.value
+        );
+        const user = userCredential.user;
+
+        // Update the user's display name
+        await updateProfile(user, {
+          displayName: name.current.value,
+        });
+
+        // Dispatch user data to Redux store
+        dispatch(
+          addUser({
+            uid: user.uid,
+            email: user.email,
+            displayName: name.current.value,
+          })
+        );
+
+        console.log("User signed up:", user);
+        navigate("/browse");
+      } else {
+        const userCredential = await signInWithEmailAndPassword(
+          auth,
+          email.current.value,
+          password.current.value
+        );
+        const user = userCredential.user;
+
+        // Dispatch user data to Redux store
+        dispatch(
+          addUser({
+            uid: user.uid,
+            email: user.email,
+            displayName: user.displayName,
+          })
+        );
+
+        console.log("User signed in:", user);
+        navigate("/browse");
+      }
+    } catch (error) {
+      console.error("Authentication error:", error);
+      setErrorMessage(error.code + ": " + error.message);
+    }
   };
 
   return (
