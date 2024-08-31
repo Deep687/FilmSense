@@ -8,8 +8,7 @@ import {
 import { auth } from "../utils/firebase";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { addUser } from "../utils/userSlice";
-import { selectUser } from "../utils/userSlice";
+import { addUser, selectUser } from "../utils/userSlice";
 
 const LogPage = () => {
   const navigate = useNavigate();
@@ -67,7 +66,6 @@ const LogPage = () => {
         );
 
         console.log("User signed up:", user);
-        navigate("/browse");
       } else {
         const userCredential = await signInWithEmailAndPassword(
           auth,
@@ -86,7 +84,6 @@ const LogPage = () => {
         );
 
         console.log("User signed in:", user);
-        navigate("/browse");
       }
     } catch (error) {
       console.error("Authentication error:", error);
@@ -96,17 +93,10 @@ const LogPage = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-gray-900 to-black font-sans text-gray-300">
-      {/* Header */}
-      <header className="relative z-10 p-4 sm:p-6">
-        <h1 className="text-3xl sm:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-pink-500 font-sans">
-          FilmSense
-        </h1>
-      </header>
-
       {/* Main content */}
-      <div className="flex-grow flex items-center justify-center px-4 sm:px-6 lg:px-8">
-        <div className="w-full max-w-sm sm:max-w-md bg-gray-800 bg-opacity-50 backdrop-blur-xl rounded-2xl p-6 sm:p-8 shadow-2xl">
-          <h2 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6 text-white text-center">
+      <div className="flex-grow flex items-center justify-center px-2 sm:px-4 lg:px-6">
+        <div className="w-full max-w-[90%] sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl bg-gray-800 bg-opacity-50 backdrop-blur-xl rounded-2xl p-4 sm:p-6 md:p-8 shadow-2xl">
+          <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-4 sm:mb-6 text-white text-center">
             {isLogin ? "Welcome Back" : "Join FilmSense"}
           </h2>
           <form className="space-y-3 sm:space-y-4" onSubmit={handleSubmit}>
@@ -115,7 +105,7 @@ const LogPage = () => {
                 <input
                   type="text"
                   ref={name}
-                  className="w-full px-3 sm:px-4 pt-5 pb-2 text-sm sm:text-base bg-gray-700 text-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 transition duration-300 peer"
+                  className="w-full px-3 sm:px-4 pt-5 pb-2 text-xs sm:text-sm md:text-base bg-gray-700 text-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 transition duration-300 peer"
                   id="name"
                   placeholder=" "
                 />
@@ -133,7 +123,7 @@ const LogPage = () => {
               <input
                 type="email"
                 ref={email}
-                className="w-full px-3 sm:px-4 pt-5 pb-2 text-sm sm:text-base bg-gray-700 text-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 transition duration-300 peer"
+                className="w-full px-3 sm:px-4 pt-5 pb-2 text-xs sm:text-sm md:text-base bg-gray-700 text-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 transition duration-300 peer"
                 id="email"
                 placeholder=" "
               />
@@ -150,7 +140,7 @@ const LogPage = () => {
               <input
                 type="password"
                 ref={password}
-                className="w-full px-3 sm:px-4 pt-5 pb-2 text-sm sm:text-base bg-gray-700 text-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 transition duration-300 peer"
+                className="w-full px-3 sm:px-4 pt-5 pb-2 text-xs sm:text-sm md:text-base bg-gray-700 text-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 transition duration-300 peer"
                 id="password"
                 placeholder=" "
               />
@@ -170,7 +160,7 @@ const LogPage = () => {
             )}
             <button
               type="submit"
-              className="w-full bg-gradient-to-r from-red-500 to-pink-500 text-white py-2 sm:py-3 rounded-lg hover:from-red-600 hover:to-pink-600 transition duration-300 font-bold shadow-lg text-sm sm:text-base"
+              className="w-full bg-gradient-to-r from-red-500 to-pink-500 text-white py-2 sm:py-3 rounded-lg hover:from-red-600 hover:to-pink-600 transition duration-300 font-bold shadow-lg text-xs sm:text-sm md:text-base"
             >
               {isLogin ? "Sign In" : "Create Account"}
             </button>
