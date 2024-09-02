@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState } from "react";
 import { validData } from "../utils/Valid";
 import {
   createUserWithEmailAndPassword,
@@ -6,25 +6,17 @@ import {
   updateProfile,
 } from "firebase/auth";
 import { auth } from "../utils/firebase";
-import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { addUser, selectUser } from "../utils/userSlice";
+
+import { useDispatch } from "react-redux";
+import { addUser } from "../utils/userSlice";
 
 const LogPage = () => {
-  const navigate = useNavigate();
   const [isLogin, setIsLogin] = useState(true);
   const name = useRef(null);
   const email = useRef(null);
   const password = useRef(null);
   const [errorMessage, setErrorMessage] = useState("");
   const dispatch = useDispatch();
-  const user = useSelector(selectUser);
-
-  useEffect(() => {
-    if (user) {
-      navigate("/browse");
-    }
-  }, [user, navigate]);
 
   const toggleForm = () => {
     setIsLogin(!isLogin);
@@ -94,7 +86,7 @@ const LogPage = () => {
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-gray-900 to-black font-sans text-gray-300">
       {/* Main content */}
-      <div className="flex-grow flex items-center justify-center px-2 sm:px-4 lg:px-6">
+      <div className="flex-grow flex items-center justify-center px-2 sm:px-4 lg:px-6 ">
         <div className="w-full max-w-[90%] sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl bg-gray-800 bg-opacity-50 backdrop-blur-xl rounded-2xl p-4 sm:p-6 md:p-8 shadow-2xl">
           <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-4 sm:mb-6 text-white text-center">
             {isLogin ? "Welcome Back" : "Join FilmSense"}

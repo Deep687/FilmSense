@@ -1,9 +1,16 @@
+import { useSelector } from "react-redux";
+import { selectTopRatedMovies } from "../utils/movieList";
+import useTopRatedMovies from "../Constants/useTopRatedMovies";
+import MainComponent from "./MiniComponents/MainComponenet";
 const Browse = () => {
+  useTopRatedMovies();
+  const topRatedMovies = useSelector(selectTopRatedMovies);
+  if (topRatedMovies === null) return;
+
   return (
     <div className="min-h-screen bg-slate-900 text-white">
-      <main className="container mx-auto px-4 py-8">
-        <h2 className="text-2xl font-bold mb-4">Browse page</h2>
-        {/* Add your browse content here */}
+      <main className="container">
+        <MainComponent />
       </main>
     </div>
   );
