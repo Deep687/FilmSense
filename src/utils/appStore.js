@@ -1,6 +1,5 @@
 import userReducer from "./userSlice";
 import movieListReducer from "./movieList";
-
 import { configureStore } from "@reduxjs/toolkit";
 
 const appStore = configureStore({

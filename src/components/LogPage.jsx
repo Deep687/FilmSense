@@ -9,6 +9,8 @@ import { auth } from "../utils/firebase";
 
 import { useDispatch } from "react-redux";
 import { addUser } from "../utils/userSlice";
+import { useNavigate } from "react-router-dom";
+import Header from "./Header";
 
 const LogPage = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -17,6 +19,7 @@ const LogPage = () => {
   const password = useRef(null);
   const [errorMessage, setErrorMessage] = useState("");
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const toggleForm = () => {
     setIsLogin(!isLogin);
@@ -58,6 +61,9 @@ const LogPage = () => {
         );
 
         console.log("User signed up:", user);
+
+        // After successful sign up
+        navigate("/browse");
       } else {
         const userCredential = await signInWithEmailAndPassword(
           auth,
@@ -76,6 +82,9 @@ const LogPage = () => {
         );
 
         console.log("User signed in:", user);
+
+        // After successful sign in
+        navigate("/browse");
       }
     } catch (error) {
       console.error("Authentication error:", error);
@@ -85,6 +94,7 @@ const LogPage = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-gray-900 to-black font-sans text-gray-300">
+      <Header />
       {/* Main content */}
       <div className="flex-grow flex items-center justify-center px-2 sm:px-4 lg:px-6 ">
         <div className="w-full max-w-[90%] sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl bg-gray-800 bg-opacity-50 backdrop-blur-xl rounded-2xl p-4 sm:p-6 md:p-8 shadow-2xl">

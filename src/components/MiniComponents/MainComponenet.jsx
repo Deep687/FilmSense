@@ -1,51 +1,31 @@
 import { useSelector } from "react-redux";
-import { selectTopRatedMovies } from "../../utils/movieList";
-import { OPTIONS } from "../../Constants/constants";
-import { useEffect, useState } from "react";
-import VideoBg from "./VideoBg";
+import { selectMovieInfo } from "../../utils/movieList";
+
 import TextContainer from "./TextContainer";
 
+import ImageCard from "./ImageCard";
+import CastComponent from "./CastComponent";
+
 const MainComponent = () => {
-  const filtermovieList = useSelector(selectTopRatedMovies);
-  const videoMovie = filtermovieList[7];
-  console.log(videoMovie);
-  const [trailer, setTrailer] = useState(null);
+  const movieInfo = useSelector(selectMovieInfo);
 
-  const fetchMovieData = async () => {
-    try {
-      const data = await fetch(
-        `https://api.themoviedb.org/3/movie/${videoMovie.id}/videos`,
-        OPTIONS
-      );
-      const json = await data.json();
-      console.log(json);
+  if (!movieInfo) {
+    return <div className="text-white">Loading...</div>;
+  }
 
-      const trailerVideos = json.results.filter(
-        (result) => result.type === "Trailer"
-      );
-      if (!trailerVideos || trailerVideos.length === 0) {
-        if (json.results.length > 0) {
-          setTrailer(json.results[0]);
-        }
-      } else {
-        setTrailer(trailerVideos[0] || trailerVideos[1]);
-      }
-    } catch (error) {
-      console.error("Failed to fetch movie data:", error);
-    }
-  };
-  console.log(trailer);
-  useEffect(() => {
-    fetchMovieData();
-  }, []);
   return (
     <div>
-      {trailer && (
-        <div>
-          <VideoBg data={trailer} />
-          <TextContainer data={videoMovie} />
+      <div className="hero flex flex-col xs:flex-col sm:flex-col md:flex-col lg:flex-row xl:flex-row">
+        <div className="w-full px-2 xs:px-3 sm:px-4 md:w-full lg:w-3/4 xl:w-3/4">
+          <TextContainer />
         </div>
-      )}
+        <div className="image mt-4 mx-auto xs:mt-6 sm:mt-8 md:mt-10 lg:mt-20 lg:mr-20 xl:mt-20 xl:mr-20">
+          <ImageCard />
+        </div>
+      </div>
+      <div className="mx-2 xs:mx-3 sm:mx-4 md:mx-6 lg:ml-32 xl:ml-32">
+        <CastComponent />
+      </div>
     </div>
   );
 };
